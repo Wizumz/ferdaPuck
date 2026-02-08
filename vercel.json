@@ -2,16 +2,32 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/api?__path=manifest.json"
+    },
+    {
       "source": "/manifest.json",
-      "destination": "/api/manifest.json"
+      "destination": "/api?__path=manifest.json"
     },
     {
       "source": "/catalog/:path*",
-      "destination": "/api/catalog/:path*"
+      "destination": "/api?__path=catalog/:path*"
     },
     {
       "source": "/stream/:path*",
-      "destination": "/api/stream/:path*"
+      "destination": "/api?__path=stream/:path*"
+    },
+    {
+      "source": "/api/manifest.json",
+      "destination": "/api?__path=manifest.json"
+    },
+    {
+      "source": "/api/catalog/:path*",
+      "destination": "/api?__path=catalog/:path*"
+    },
+    {
+      "source": "/api/stream/:path*",
+      "destination": "/api?__path=stream/:path*"
     }
   ]
 }
