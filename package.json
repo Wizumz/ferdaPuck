@@ -1,0 +1,20 @@
+{
+  "name": "ferdapuck",
+  "version": "0.1.0",
+  "description": "Stremio addon for live hockey streams (NHL focus)",
+  "main": "addon.js",
+  "scripts": {
+    "start": "node server.js",
+    "discover": "node scripts/discover-structure.js",
+    "verify": "node scripts/verify-addon.js",
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": ["stremio", "addon", "hockey", "nhl", "live"],
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "playwright": "^1.49.0",
+    "stremio-addon-sdk": "^1.0.0"
+  },
+  "devDependencies": {}
+}

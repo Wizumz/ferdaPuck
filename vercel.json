@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/manifest.json",
+      "destination": "/api/manifest.json"
+    },
+    {
+      "source": "/catalog/:path*",
+      "destination": "/api/catalog/:path*"
+    },
+    {
+      "source": "/stream/:path*",
+      "destination": "/api/stream/:path*"
+    }
+  ]
+}
