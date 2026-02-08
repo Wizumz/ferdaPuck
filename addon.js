@@ -19,27 +19,30 @@ const manifest = {
   types: ['tv'],
 
   catalogs: [
-    {
-      type: 'tv',
-      id: 'nhl',
-      name: 'NHL Live',
-    },
+    { type: 'tv', id: 'nhl', name: 'NHL Live' },
+    { type: 'tv', id: 'ncaa-d1', name: 'NCAA D1 Men' },
   ],
 
-  idPrefixes: ['nhl:'],
+  idPrefixes: ['nhl:', 'ncaa:'],
 };
 
 const builder = new addonBuilder(manifest);
 
-// Catalog: list games from onhockey.tv
+// Catalog: list games from onhockey.tv (filter by league)
 builder.defineCatalogHandler(async (args) => {
-  if (args.type !== 'tv' || args.id !== 'nhl') {
+  if (args.type !== 'tv' || !['nhl', 'ncaa-d1'].includes(args.id)) {
     return Promise.resolve({ metas: [] });
   }
 
   try {
     const { games } = await scrapeOnHockey({ usePlaywright });
-    const metas = games.map((g) => ({
+    const isNcaa = args.id === 'ncaa-d1';
+    const filtered = games.filter((g) =>
+      isNcaa
+        ? g.id.startsWith('ncaa:') || (g.league && /NCAA|College|D1/i.test(g.league))
+        : g.id.startsWith('nhl:') || (g.league && /NHL/i.test(g.league))
+    );
+    const metas = filtered.map((g) => ({
       id: g.id,
       type: 'tv',
       name: g.name,
@@ -55,7 +58,7 @@ builder.defineCatalogHandler(async (args) => {
 // Stream: return streams for a game (Stremio format)
 builder.defineStreamHandler(async (args) => {
   const id = args.id;
-  if (!id || !id.startsWith('nhl:')) {
+  if (!id || (!id.startsWith('nhl:') && !id.startsWith('ncaa:'))) {
     return Promise.resolve({ streams: [] });
   }
 
