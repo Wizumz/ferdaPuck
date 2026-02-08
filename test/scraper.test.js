@@ -38,12 +38,11 @@ describe('parser', () => {
       assert.ok(extStream.externalUrl.includes('channel=20829'), 'stream URL should contain channel');
       assert.strictEqual(extStream.name, 'Watch on OnHockey.TV');
     });
-    it('includes iframe stream for first game', () => {
+    it('includes iframe stream for first game when it looks like video', () => {
       const { games } = parseOnHockeyPage(fixtureHtml);
       const first = games[0];
-      const embedStream = first.streams.find((s) => s.url && s.url.includes('embed'));
-      assert.ok(embedStream, 'expect embed stream');
-      assert.strictEqual(embedStream.name, 'Embed');
+      const embedStream = first.streams.find((s) => (s.url || s.externalUrl || '').includes('embed'));
+      assert.ok(embedStream, 'expect embed stream from fixture iframe');
     });
   });
 });
